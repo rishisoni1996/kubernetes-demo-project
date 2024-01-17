@@ -105,4 +105,67 @@ Ensure you have the following tools installed before starting:
    kubectl rollout undo deployment my-react
    ```
 
+# Configurations for Kubernetes Cluster Using YAML Files
+
+This repository provides YAML configurations for deploying a Node.js application and creating a corresponding service in a Kubernetes cluster. Follow the steps below to apply these configurations:
+
+### deployment-node-app.yml
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-node-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+      - name: node-app
+        image: rishidocker123/server:1.0
+```
+
+To apply the deployment configuration, use the following command:
+
+```bash
+kubectl apply -f deployment-node-app.yml
+```
+
+### service-node-app.yml
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-node-app
+spec:
+  ports:
+    - name: http
+      port: 5555
+      targetPort: 4000
+  selector:
+    app: node-app
+  type: LoadBalancer
+```
+
+To apply the service configuration, use the following command:
+
+```bash
+kubectl apply -f service-node-app.yml
+```
+
+Now, to run the service, you can expose it using Minikube.
+
+```bash
+minikube service service-node-app --url
+```
+
+This will print out the URL where your service is accessible.
+
 This repository serves as a guide for exploring Kubernetes features. Feel free to experiment, modify, and extend the examples based on your learning needs. Happy Kubernetes hacking!

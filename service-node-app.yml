@@ -1,0 +1,15 @@
+apiVersion: /v1
+kind: Service
+metadata:
+  # Unique key of the Service instance 
+  name: service-node-app
+spec:
+  ports:
+    # accept traffic sent to port 5555
+    - name: http
+      port: 5555
+      targetPort: 4000
+  selector:
+    # app name should be same as deployment's template label
+    app: node-app
+  type: LoadBalancer
